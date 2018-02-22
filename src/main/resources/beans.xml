@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xmlns:aersospike="http://www.springframework.org/schema/data/aersospike"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/cql http://www.springframework.org/schema/cql/spring-cql-1.0.xsd
+    http://www.springframework.org/schema/data/aersospike http://www.springframework.org/schema/data/aersospike/spring-aersospike-1.0.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <aersospike:repositories base-package="com.demo.aerospike.repositories" />
+    <bean id="AerospikeClient" destroy-method="close"
+          class="com.aerospike.client.AerospikeClient">
+        <constructor-arg index="0" ref="ClientPolicy" />
+        <constructor-arg index="1"
+                         value="localhost" />
+        <constructor-arg index="2"
+                         value="3000" />
+    </bean>
+
+    <bean id="ClientPolicy" class="com.aerospike.client.policy.ClientPolicy">
+        <!-- <property name="failIfNotConnected" value="true" /> -->
+    </bean>
+
+    <bean id="AerospikeTemplate"
+          class="org.springframework.data.aerospike.core.AerospikeTemplate">
+        <constructor-arg index="0" ref="AerospikeClient" />
+        <constructor-arg index="1"
+                         value="name" />
+    </bean>
+
+    <!--<bean id="UserRecordRepository" class="com.demo.aerospike.repositories.UserRepository"></bean>-->
+</beans>
